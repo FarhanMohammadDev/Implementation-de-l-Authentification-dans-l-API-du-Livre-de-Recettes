@@ -1,8 +1,8 @@
 const express =require("express");
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
 const asyncHandler = require('express-async-handler')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const {User,validateRegisterUser,validateLoginUser} = require("../models/User")
 const dotenv = require("dotenv");
 dotenv.config();
