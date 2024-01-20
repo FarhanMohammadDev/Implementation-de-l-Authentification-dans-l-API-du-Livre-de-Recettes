@@ -28,7 +28,6 @@ router.post("/register",asyncHandler(async(req,res)=>{
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
-        isAdmin: req.body.isAdmin
     })
     const result = await newUser.save();
     const token = jwt.sign({
@@ -72,7 +71,7 @@ router.post("/login",asyncHandler(async(req,res)=>{
     const token = jwt.sign({
         id: user._id,
          username:user.username,
-         isAmin: user.isAdmin
+         isAdmin: user.isAdmin
         },process.env.JWT_SECRET_KEY,{
         expiresIn:"1h"
         // expiresIn:"1d"

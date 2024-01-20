@@ -1,13 +1,16 @@
 const jwt = require("jsonwebtoken")
 // verify Token
 function verifyToken(req,res,next) {
+    
     const token =  req.headers.token;
     if (token) {
         try {
-            const decoded = jwt.verify(token,process.env.JWT_SECRET_KEY)  // decoded = {id ,admin}
+            const decoded = jwt.verify(token,process.env.JWT_SECRET_KEY)  
+            console.log("Decoded Token:", decoded);
             req.user = decoded;
             next();
         } catch (error) {
+            console.error("Token Verification Error:", error);
             res.status(401).json({message:"No token provided"}) 
         }
     } else {

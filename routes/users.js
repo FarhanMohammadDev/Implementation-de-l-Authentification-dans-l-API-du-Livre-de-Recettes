@@ -3,15 +3,58 @@ const router = express.Router();
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs');
 const {User,validateUpdateUser} = require("../models/User")
-const {verifyTokenAndAuthorization} = require("../middlewares/verifyToken")
+const {verifyTokenAndAuthorization, verifyTokenAndAdmin} = require("../middlewares/verifyToken")
 
-  /**
- * @desc post the recipe 
+
+/**
+ * @desc Get all Users 
+ * @route /api/users
+ * @method GET
+ * @access private (only admin)
+*/
+router.get("/",verifyTokenAndAdmin, asyncHandler(async(req,res)=>{
+  const users = await User.find().select("-password")
+  res.status(200).json(users);
+}))
+
+
+/**
+ * @desc Get User by id 
+ * @route /api/users/:id
+ * @method GET
+ * @access private (only user himself & admin)
+*/
+router.get("/:id",verifyTokenAndAuthorization, asyncHandler(async(req,res)=>{
+  const user = await User.findById(req.params.id).select("-password");
+  if(user){
+    res.status(200).json(user);
+  }else{
+    res.status(404).json({message : "user not found"});
+  }
+}))
+
+/**
+ * @desc Delete User 
+ * @route /api/users/:id
+ * @method DELETE
+ * @access private (only user himself & admin)
+*/
+router.delete("/:id",verifyTokenAndAuthorization, asyncHandler(async(req,res)=>{
+  const user = await User.findById(req.params.id).select("-password");
+  if(user){
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({message : "user has been deleted successfully"});
+  }else{
+    res.status(404).json({message : "user not found"});
+  }
+}))
+
+/**
+ * @desc update the User 
  * @route /api/users/:id
  * @method PUT
  * @access private
 */
-
 router.put("/:id",verifyTokenAndAuthorization, asyncHandler(async(req,res)=>{
     const {error} = validateUpdateUser(req.body);
 
@@ -34,4 +77,5 @@ router.put("/:id",verifyTokenAndAuthorization, asyncHandler(async(req,res)=>{
     res.status(200).json(updateUser);
     // updateUser ? res.status(200).json(updateUser) : res.status(404).json('user not found');
 }))
+
 module.exports = router;
