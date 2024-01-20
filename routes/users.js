@@ -3,6 +3,7 @@ const router = express.Router();
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs');
 const {User,validateUpdateUser} = require("../models/User")
+const {verifyTokenAndAuthorization} = require("../middlewares/verifyToken")
 
   /**
  * @desc post the recipe 
@@ -10,10 +11,10 @@ const {User,validateUpdateUser} = require("../models/User")
  * @method PUT
  * @access private
 */
-router.put("/:id",asyncHandler(async(req,res)=>{
+
+router.put("/:id",verifyTokenAndAuthorization, asyncHandler(async(req,res)=>{
     const {error} = validateUpdateUser(req.body);
-    console.log(error);
-    console.log(typeof error);
+
     if(error){
       return res.status(400).json({message:error.details[0].message});
     }
