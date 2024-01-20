@@ -1,6 +1,8 @@
 const express =require("express");
 const router = express.Router();
-const recipeController = require("../controllers/recipeController")
+const recipeController = require("../controllers/recipeController");
+const {verifyTokenAndAdmin} = require("../middlewares/verifyToken")
+
 /**
  * @desc Get all recipes
  * @route /api/recipes
@@ -20,24 +22,24 @@ const recipeController = require("../controllers/recipeController")
  * @desc post the recipe 
  * @route /api/recipes
  * @method POST
- * @access public
+ * @access private (only admin) 
 */
-  router.post("/",recipeController.recipe_store_post)
+  router.post("/",verifyTokenAndAdmin,recipeController.recipe_store_post)
   
 /**
  * @desc Update a recipe 
  * @route /api/recipes/:id
  * @method PUT
- * @access public
+ * @access private (only admin)
 */
-  router.put("/:id",recipeController.recipe_update_put)
+  router.put("/:id",verifyTokenAndAdmin,recipeController.recipe_update_put)
   
 /**
  * @desc Delete a recipe 
  * @route /api/recipes/:id
  * @method DELETE
- * @access public
+ * @access private (only admin)
 */
-  router.delete("/:id",recipeController.recipe_destroy_delete)
+  router.delete("/:id",verifyTokenAndAdmin,recipeController.recipe_destroy_delete)
 
 module.exports = router;
