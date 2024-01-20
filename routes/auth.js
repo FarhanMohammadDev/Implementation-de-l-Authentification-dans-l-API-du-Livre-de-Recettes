@@ -1,3 +1,5 @@
+// authRoute.js
+
 const express =require("express");
 const router = express.Router();
 const asyncHandler = require('express-async-handler')
@@ -12,7 +14,60 @@ dotenv.config();
  * @method POST
  * @access public
 */
-// router.post("/register",userController.user_store_post)
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Register a new user (public)
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - username
+ *               - password
+ *           example:
+ *             email: user@example.com
+ *             username: newUser
+ *             password: newPassword
+ *     responses:
+ *       '201':
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               id: user_id
+ *               email: user@example.com
+ *               username: newUser
+ *               token: eyJhbGciOiJIUzI1NiIsIn...
+ *       '400':
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Validation error: Email is required"
+ *       '409':
+ *         description: Conflict - User already registered
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "This user already registered"
+ *       '500':
+ *         description: Internal server error
+ */
+
 router.post("/register",asyncHandler(async(req,res)=>{
     const {error} = validateRegisterUser(req.body);
     if (error) {
@@ -51,7 +106,57 @@ router.post("/register",asyncHandler(async(req,res)=>{
  * @method POST
  * @access public
 */
-// router.post("/login",userController.user_store_post)
+
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login user
+ *     description: Login an existing user (public)
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *           example:
+ *             email: user@example.com
+ *             password: userPassword
+ *     responses:
+ *       '200':
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               id: user_id
+ *               email: user@example.com
+ *               username: existingUser
+ *               token: eyJhbGciOiJIUzI1NiIsIn...
+ *       '400':
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Validation error: Email is required"
+ *       '401':
+ *         description: Unauthorized - Invalid email or password
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Invalid Email Or Password"
+ *       '500':
+ *         description: Internal server error
+ */
+
 router.post("/login",asyncHandler(async(req,res)=>{
     const {error} = validateLoginUser(req.body);
     if (error) {
