@@ -2,6 +2,7 @@
 // npx nodemon index    --->  npm start
 const express = require("express");
 const recipesPath = require("./routes/recipes");
+const authPath = require("./routes/auth");
 const logger = require("./middlewares/logger")
 const {notFound,errorHandler} = require("./middlewares/errors")
 const  Database  = require("./configs/db");
@@ -18,6 +19,7 @@ app.use(logger)
 
 //Routes
 app.use("/api/recipes",recipesPath);
+app.use("/api/auth",authPath);
 
 // Error Handler Middleware 
 app.use(notFound)

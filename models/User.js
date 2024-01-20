@@ -12,20 +12,20 @@ const UserSchema = new mongoose.Schema(
       unique: true,
     },
     username: {
-      type: string,
+      type: String,
       required: true,
       trim: true,
       minlength: 2,
       maxlength: 200,
     },
     password: {
-      type: string,
+      type: String,
       required: true,
       trim: true,
       minlength: 8,
     },
     isAdmin: {
-      type: boolean,
+      type: Boolean,
       default: false,
     },
   },
@@ -35,6 +35,7 @@ const UserSchema = new mongoose.Schema(
 /**
  * @desc function validate Register User
  * @access public
+ * 
  */
 function validateRegisterUser(obj) {
   const schema = Joi.object({
@@ -74,7 +75,7 @@ function validateLoginUser(obj) {
 
   return schema.validate(obj);
 }
-const User = mongoose.model("Recipe", UserSchema);
+const User = mongoose.model("User", UserSchema);
 module.exports = {
   User,
   validateRegisterUser,
