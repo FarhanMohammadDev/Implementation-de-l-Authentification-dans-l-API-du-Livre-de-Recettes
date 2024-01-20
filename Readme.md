@@ -66,4 +66,4 @@ Pour utiliser l'API avec authentification, suivez les étapes ci-dessous :
 1. Lancez l'API : `npm start`
 2. Explorez les différentes fonctionnalités via les endpoints définis dans la documentation.
    ```bash
-   git clone https://github.com/votre-utilisateur/projet-gestion-recettes.git
+   git clone https://github.com/FarhanMohammadDev/Implementation-de-l-Authentification-dans-l-API-du-Livre-de-Recettes.git
